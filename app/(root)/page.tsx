@@ -11,8 +11,8 @@ const Home = () => {
 
   return (
     <section className="home">
-      <div>
-        <header className="home-content">
+      <div className="home-content">
+        <header className="home-header">
           <HeaderBox
             type="greeting"
             title="Welcome"
