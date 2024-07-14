@@ -12,6 +12,7 @@ import { authFormSchema } from "@/lib/utils";
 import CustomInput from "./CustomInput";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signUp } from "@/lib/actions/user.actions";
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
@@ -35,8 +36,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
     try {
       // sign up with Appwrite & create plain link token
       if (type === "sign-up") {
-        // const newUser = await signUp(data);
-        // setUser(newUser);
+        const newUser = await signUp(data);
+        setUser(newUser);
       }
       if (type === "sign-in") {
         // const user = await signIn({
