@@ -12,7 +12,7 @@ import { authFormSchema } from "@/lib/utils";
 import CustomInput from "./CustomInput";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/lib/actions/user.actions";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const router = useRouter();
@@ -40,13 +40,13 @@ const AuthForm = ({ type }: AuthFormProps) => {
         setUser(newUser);
       }
       if (type === "sign-in") {
-        // const user = await signIn({
-        //     email: data.email,
-        //     password: data.password
-        // })
-        // if (user) {
-        //     router.push('/')
-        // }
+        const user = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+        if (user) {
+          router.push("/");
+        }
       }
     } catch (error) {
       console.log("error:", error);
