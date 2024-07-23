@@ -34,7 +34,7 @@ export const signUp = async (userData: SignUpParams) => {
   const { email, password, firstName, lastName } = userData;
   let newUserAccount;
   try {
-    const { account } = await createAdminClient();
+    const { account, database } = await createAdminClient();
 
     newUserAccount = await account.create(
       ID.unique(),
@@ -54,6 +54,18 @@ export const signUp = async (userData: SignUpParams) => {
 
     const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
 
+    const newUser = await database.createDocument(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        ...userData,
+        userId: newUserAccount.$id,
+        dwollaCustomerId,
+        dwollaCustomerUrl,
+      }
+    );
+
     const session = await account.createEmailPasswordSession(email, password);
 
     cookies().set("appwrite-session", session.secret, {
@@ -63,7 +75,7 @@ export const signUp = async (userData: SignUpParams) => {
       secure: true,
     });
 
-    return parseStringify(newUserAccount);
+    return parseStringify(newUser);
   } catch (error) {
     console.log("error:", error);
   }
