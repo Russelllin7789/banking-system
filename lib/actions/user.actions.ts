@@ -20,6 +20,20 @@ const {
   APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
 } = process.env;
 
+export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+  try {
+    const { database } = await createAdminClient();
+    const user = await database.listDocuments(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      [Query.equal("useId", [userId])]
+    );
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
 export const signIn = async ({ email, password }: signInProps) => {
   try {
     const { account } = await createAdminClient();
@@ -32,8 +46,9 @@ export const signIn = async ({ email, password }: signInProps) => {
       secure: true,
     });
 
-    const response = await account.createEmailPasswordSession(email, password);
-    return parseStringify(response);
+    const user = await getUserInfo({ userId: session.userId });
+
+    return parseStringify(user);
   } catch (error) {
     console.log("error:", error);
   }
@@ -93,7 +108,11 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 export const getLoggedInUser = async () => {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    const result = await account.get();
+
+    const user = await getUserInfo({ userId: result.$id });
+
+    return parseStringify(user);
   } catch (error) {
     return null;
   }
