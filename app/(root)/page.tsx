@@ -10,8 +10,8 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
 
   if (!accounts) return;
 
-  const accoutsData = accounts?.data;
-  const appwriteItemId = (id as string) || accoutsData.appwriteItemId;
+  const accountsData = accounts?.data;
+  const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
   const account = await getAccount({ appwriteItemId });
 
   return (
@@ -25,7 +25,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
             subtext="Access and manage your account and transactions efficiently."
           />
           <TotalBalanceBox
-            accounts={accoutsData}
+            accounts={accountsData}
             totalBanks={accounts?.totalBanks}
             totalCurrentBalance={accounts?.totalCurrentBalance}
           />
@@ -34,8 +34,8 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
       </div>
       <RightSidebar
         user={loggedIn}
-        transactions={[]}
-        banks={[{ currentBalance: 123.5 }, { currentBalance: 1230.5 }]}
+        transactions={accounts?.transactions}
+        banks={accountsData?.slice(0, 2)}
       />
     </section>
   );
