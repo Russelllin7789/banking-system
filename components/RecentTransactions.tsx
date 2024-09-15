@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const RecentTransactions = ({
   accounts,
@@ -18,6 +19,13 @@ const RecentTransactions = ({
           View all
         </Link>
       </header>
+
+      <Tabs defaultValue={appwriteItemId} className="w-full">
+        <TabsList className="recent-transactions-tablist">
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+        </TabsList>
+      </Tabs>
     </section>
   );
 };
