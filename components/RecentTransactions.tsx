@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BankTabItem } from "./BankTabItem";
+import BankInfo from "./BankInfo";
 
 const RecentTransactions = ({
   accounts,
@@ -38,7 +39,13 @@ const RecentTransactions = ({
             key={account.id}
             value={account.appwriteItemId}
             className="space-y-4"
-          ></TabsContent>
+          >
+            <BankInfo
+              account={account}
+              appwriteItemId={appwriteItemId}
+              type="full"
+            />
+          </TabsContent>
         ))}
       </Tabs>
     </section>
