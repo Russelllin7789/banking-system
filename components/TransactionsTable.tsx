@@ -32,6 +32,7 @@ const CategoryBadge = ({ category }: CategoryBadgeProps) => {
 };
 
 const TransactionsTable = ({ transactions }: TransactionTableProps) => {
+  if (!transactions) return null;
   return (
     <Table>
       <TableHeader className="bg-[#f9fafb]">
