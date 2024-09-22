@@ -6,6 +6,7 @@ import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
 import { getLoggedInUser } from "@/lib/actions/user.actions";
 
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
+  const currentPage = Number(page as string) || 1;
   const loggedIn = await getLoggedInUser();
   const accounts = await getAccounts({ userId: loggedIn?.$id as string });
 
@@ -14,6 +15,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const accountsData = accounts?.data;
   const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
   const account = await getAccount({ appwriteItemId });
+  console.log("account:", account);
 
   return (
     <section className="home">
@@ -35,7 +37,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
           accounts={accountsData}
           appwriteItemId={appwriteItemId}
           transactions={account?.transactions}
-          page={Number(page)}
+          page={currentPage}
         />
       </div>
       <RightSidebar
